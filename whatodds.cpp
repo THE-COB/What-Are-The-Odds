@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <vector>
-#include <fstream>
+#include <algorithm>
 
 #include "Guess.h"
 #include "FSystem.h"
@@ -23,35 +23,37 @@ private:
 	static int counter;
 };
 
-vector<int> mode(vector<int> nums){
-	vector<int> temp = nums;
-	vector<int>::iterator it;
-	it = unique(temp.begin(), temp.end());
-	temp.resize(distance(temp.begin(), it));
-	int biggest = temp[0];
-	for(int i = 1; i<temp.size(); i++){
-		if(count(nums.begin(), nums.end(), temp[i]) > count(nums.begin(),nums.end(),biggest)){
-			biggest = temp[i];
-		}		
+vector<int> mode(vector<int> vec){
+	vector<int> uVecs;
+	bool isRepeat;
+	for(const int& i : vec){
+	    isRepeat = false;
+	    for(const int& j : uVecs){
+	        if(i == j){
+	            isRepeat = true;
+	            break;
+	        }
+	    }
+	    if(!isRepeat){
+	        uVecs.push_back(i);
+	    }
 	}
-	return {biggest, count(nums.begin(), nums.end(), biggest)};
+	vector<int> modes;
+	int most = 0;
+	for(const int& i : uVecs){
+	    if(count(vec.begin(),vec.end(),i) > most){
+	        most = count(vec.begin(),vec.end(), i);
+	        modes = {i};
+	    }
+	    else if(count(vec.begin(),vec.end(),i) == most){
+	        modes.push_back(i);
+	    }
+	}
+	return modes;
 }
 
-vector<int> vecMode(vector<int> nums){
-	vector<int> modes;
-	vector<int> currMode = mode(nums);
-	vector<int> nMode = currMode;
-	do{
-		modes.push_back(nMode[0]);
-		for(int i = 0; i<nums.size(); i++){
-			if(i == currMode[0]){
-				nums.erase(nums.begin()+i);
-			}
-		}
-		nMode = mode(nums);
-	} while(nMode[1]==currMode[1]);
+void finishGame(int answer){
 
-	return mode;
 }
 
 void startGame(bool arg, int m){
@@ -65,12 +67,18 @@ void startGame(bool arg, int m){
 	}
 	int guess;
 	Guess nGuess = Guess(gMax);
-	vector<Guess> rightGuesses = readFile(gMax);
-	vector<int> possGuesses;
-	if(rightGuesses.size() > 0){
-		for(const Guess& i : rightGuesses){
-			possGesses.push_back(i.getNum());
-		}
+	vector<Guess> rightGuesses = FSystem::readFile(gMax);
+	vector<Guess> allGuesses = FSystem::allFiles();
+	vector<int> goodGuesses;
+	vector<int> badGuesses;
+	for(Guess& i : rightGuesses){
+		goodGuesses.push_back(i.getNum());
+	}
+	for(Guess& i : allGuesses){
+		badGuesses.push_back(i.getNum());
+	}
+	if(badGuesses.size()>1){
+
 	}
 }
 

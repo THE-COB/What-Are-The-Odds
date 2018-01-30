@@ -23,7 +23,7 @@ public:
 	static vector<Guess> readFile(int max){
 		ifstream fileObj;
 		vector<Guess> allGuesses;
-		Guess tempGuess;
+		Guess tempGuess(-1);
 		fileObj.open("GuessFiles/"+to_string(max)+".dat", ios::in);
 		fileObj.read((char*)&tempGuess, sizeof(tempGuess));
 		while(fileObj.good()){
