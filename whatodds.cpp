@@ -2,26 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstdlib>
-#include <time.h>
+#include <ctime>
 #include <vector>
 #include <algorithm>
 
 #include "Guess.h"
 #include "FSystem.h"
+#include "Solver.h"
 using namespace std;
 using std::vector;
-
-class Rand{
-public:
-	static int randInt(int highest){
-		srand(time(NULL)+counter);
-		int num = rand()%highest+1;
-		counter++;
-		return num;
-	}
-private:
-	static int counter;
-};
 
 vector<int> mode(vector<int> vec){
 	vector<int> uVecs;
@@ -52,8 +41,21 @@ vector<int> mode(vector<int> vec){
 	return modes;
 }
 
-void finishGame(int answer){
-
+void finishGame(int answer, Guess* newG){
+	int num;
+	string a;
+	cout<<"GO"<<endl;
+	cin>>a;
+	cout<<answer<<endl;
+	num = stoi(a);
+	newG->setNum(num);
+	if(num == answer){
+		cout<<"I was right!!"<<endl;
+	}
+	else{
+		cout<<"Darn, I didn't get it"<<endl;
+	}
+	FSystem::writeFile(*newG, answer);
 }
 
 void startGame(bool arg, int m){
@@ -77,12 +79,11 @@ void startGame(bool arg, int m){
 	for(Guess& i : allGuesses){
 		badGuesses.push_back(i.getNum());
 	}
-	if(badGuesses.size()>1){
+	Solver newSolve(goodGuesses, badGuesses, gMax);
 
-	}
+	finishGame(newSolve.solve(), &nGuess);
 }
 
-int Rand::counter = 0;
 int main(int argc, char** argv){
 	if(argc>1)
 		startGame(true, atoi(argv[1]));

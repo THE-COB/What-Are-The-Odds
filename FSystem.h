@@ -13,11 +13,15 @@ using std::string;
 
 class FSystem{
 public:
-	static void writeFile(Guess newGuess){
+	static void writeFile(Guess newGuess, int compGuess){
 		ofstream fileObj;
 		maxFile(newGuess.getMax());
 		fileObj.open("GuessFiles/"+to_string(newGuess.getMax())+".dat", ios::app);
 		fileObj.write((char*)&newGuess, sizeof(newGuess));
+		fileObj.close();
+
+		fileObj.open("GuessFiles/"+to_string(newGuess.getMax())+"comp.txt", ios::app);
+		fileObj<<compGuess<<"\n";
 		fileObj.close();
 	}
 	static vector<Guess> readFile(int max){
@@ -30,6 +34,7 @@ public:
 			allGuesses.push_back(tempGuess);
 			fileObj.read((char*)&tempGuess, sizeof(tempGuess));
 		}
+		fileObj.close();
 		return allGuesses;
 	}
 	static vector<Guess> allFiles(){
@@ -56,6 +61,7 @@ private:
 				return maxes;
 			}
 		}
+		fileObj.close();
 		return maxes;
 	}
 	static void maxFile(int m){
@@ -68,6 +74,7 @@ private:
 		ofstream fileObj;
 		fileObj.open("maxfile.txt", ios::app);
 		fileObj<<m<<"\n";
+		fileObj.close();
 	}
 };
 
