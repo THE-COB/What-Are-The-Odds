@@ -37,8 +37,8 @@ public:
 		max = m;
 	}
 	int solve(){
+		srand(clock());
 		if(gBois.size()<1){
-			srand(clock());
 			int finNum = rand()%max + 1;
 			return finNum;
 		}
@@ -146,7 +146,7 @@ private:
 
 	void filler(){
 		for(Guess& i : gBois){
-			if(i.getNum()>=max){
+			if(i.getNum()<=max){
 				possGuesses.push_back(i);
 			}
 		}
