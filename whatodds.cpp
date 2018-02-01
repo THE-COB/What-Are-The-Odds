@@ -1,8 +1,4 @@
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <cstdlib>
-#include <ctime>
 #include <vector>
 #include <algorithm>
 
@@ -11,35 +7,6 @@
 #include "Solver.h"
 using namespace std;
 using std::vector;
-
-vector<int> mode(vector<int> vec){
-	vector<int> uVecs;
-	bool isRepeat;
-	for(const int& i : vec){
-	    isRepeat = false;
-	    for(const int& j : uVecs){
-	        if(i == j){
-	            isRepeat = true;
-	            break;
-	        }
-	    }
-	    if(!isRepeat){
-	        uVecs.push_back(i);
-	    }
-	}
-	vector<int> modes;
-	int most = 0;
-	for(const int& i : uVecs){
-	    if(count(vec.begin(),vec.end(),i) > most){
-	        most = count(vec.begin(),vec.end(), i);
-	        modes = {i};
-	    }
-	    else if(count(vec.begin(),vec.end(),i) == most){
-	        modes.push_back(i);
-	    }
-	}
-	return modes;
-}
 
 void finishGame(int answer, Guess* newG){
 	int num;
@@ -71,16 +38,8 @@ void startGame(bool arg, int m){
 	Guess nGuess = Guess(gMax);
 	vector<Guess> rightGuesses = FSystem::readFile(gMax);
 	vector<Guess> allGuesses = FSystem::allFiles();
-	vector<int> goodGuesses;
-	vector<int> badGuesses;
-	for(Guess& i : rightGuesses){
-		goodGuesses.push_back(i.getNum());
-	}
-	for(Guess& i : allGuesses){
-		badGuesses.push_back(i.getNum());
-	}
-	Solver newSolve(goodGuesses, badGuesses, gMax);
 
+	Solver newSolve(allGuesses, gMax);
 	finishGame(newSolve.solve(), &nGuess);
 }
 

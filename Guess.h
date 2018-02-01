@@ -21,15 +21,23 @@ public:
 		}
 		return false;
 	}
-	int getMax(){
+	int getMax() const{
 		return max;
 	}
-	int getNum(){
+	int getNum() const{
 		return num;
 	}
+
 private:
 	int max = -1;
 	int num = -1;
 };
+
+bool operator==(const Guess& g1, const Guess& g2){
+	if(g1.getMax()==g2.getMax() && g1.getNum()==g2.getNum()){
+		return true;
+	}
+	return false;
+}
 
 #endif

@@ -23,6 +23,10 @@ public:
 		fileObj.open("GuessFiles/"+to_string(newGuess.getMax())+"comp.txt", ios::app);
 		fileObj<<compGuess<<"\n";
 		fileObj.close();
+
+		fileObj.open("GuessFiles/"+to_string(newGuess.getMax())+"player.txt", ios::app);
+		fileObj<<newGuess.getNum()<<"\n";
+		fileObj.close();
 	}
 	static vector<Guess> readFile(int max){
 		ifstream fileObj;
